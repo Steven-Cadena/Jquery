@@ -36,6 +36,11 @@
                      , "style": "color:blue"
                 });
                 h1.appendTo($("#padre"));
+                //AL PULSAR, Q  UEREMOS PONER EL VALOR ACTUAL DE LA CAJA DE TEXTO
+                h1.click(function(){
+                    var texto = $("#cajatexto").val();
+                    alert(texto);
+                });
             });
         });
     </script>
