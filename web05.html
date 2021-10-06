@@ -19,8 +19,23 @@
     <script>
 
         $(document).ready(function(){
+
+            $("h1").click(function(){
+                $(this).text("Evento Activado.");
+            });
+
             $("#botoncrear").click(function(){
-                
+                var texto = $("#cajatexto").val();
+                /*var h1 = $("<h1>");
+                h1.text(texto);
+                h1.css("color","blue");
+                $("#padre").append(h1);*/
+                //CREAR LOS CONTROLES CON JSON 
+                var h1 = $("<h1>", {
+                     "text": texto
+                     , "style": "color:blue"
+                });
+                h1.appendTo($("#padre"));
             });
         });
     </script>
