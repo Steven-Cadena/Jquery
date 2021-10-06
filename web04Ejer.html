@@ -10,12 +10,15 @@
 
     <label>Día: </label>
     <input type="text" id="dia">
+    <br/><br/>
 
     <label>Mes: </label>
     <input type="text" id="mes">
+    <br/><br/>
 
     <label>Año: </label>
     <input type="text" id="anyo">
+    <br/><br/>
 
     <button type="button" id="botonresultado">Mostrar día de la semana </button>
 
@@ -27,43 +30,101 @@
         $(document).ready(function(){
 
             $("#botonresultado").click(function(){
-                var dia = parseInt($("#dia").val());
-                var mes = parseInt($("#mes").val());
-                var anyo = parseInt($("anyo").val());
-                var mesNuevo = 0;
-                var anyoNuevo = 0;
+            var dia = parseInt($("#dia").val());
+            var mes = parseInt($("#mes").val());
+            var anyo = parseInt($("#anyo").val());
+            var diasSemana = ["Sábado","Domingo","Lunes","Martes","Miercoles","Jueves","Viernes"];
 
+            //DEFINIMOS VARIABLES
+            var mesNuevo = 0;
+            var anyoNuevo = 0;
+            var multiplicacionAnyo = 0;
+            var dividirAnyo = 0;
+            var dividirAnyo100 = 0;
+            var dividirAnyo400 = 0;
+            var calculo5 = 0;
+            var calculo6 = 0;
+            var calculo7 = 0;
+            var resultado = "";
+
+            //SE METE AQUÍ EN CASO DE QUE EL MES SEA ENERO
             if(mes == 01){
                 mesNuevo = 13;
-                anyoNuevo = anyo - 1;
-            }
+                anyoNuevo = parseInt(anyo - 1);
+                multiplicacionAnyo = Math.trunc(((mesNuevo + 1)*3)/5);
+                console.log(multiplicacionAnyo);
+                dividirAnyo = Math.trunc(anyoNuevo/4);
+                dividirAnyo100 = Math.trunc(anyoNuevo/100);
+                dividirAnyo400 = Math.trunc(anyoNuevo/400);
 
+                calculo5 = Math.trunc(dia + (mesNuevo*2) + anyoNuevo + multiplicacionAnyo + dividirAnyo - dividirAnyo100 + dividirAnyo400 + 2);
+
+                calculo6 = Math.trunc(calculo5/7);
+                calculo7 = Math.trunc(calculo5 - (calculo6 * 7));
+                resultado= diasSemana[calculo7];
+                console.log(resultado);
+
+            $("#mostrar").text(resultado);
+            }
+            //SE METE AQUÍ EN CASO DE QUE EL MES SEA FEBRERO
             if(mes == 02){
                 mesNuevo = 14;
-                anyoNuevo = anyo - 1;
-            }
+                anyoNuevo = parseInt(anyo - 1);
+                multiplicacionAnyo = Math.trunc(((mesNuevo + 1)*3)/5);
+                console.log(multiplicacionAnyo);
+                dividirAnyo = Math.trunc(anyoNuevo/4);
+                dividirAnyo100 = Math.trunc(anyoNuevo/100);
+                dividirAnyo400 = Math.trunc(anyoNuevo/400);
 
-            var multiplicacionAnyo = Math.round(((mes + 1)*3)/5);
+                calculo5 = Math.trunc(dia + (mesNuevo*2) + anyoNuevo + multiplicacionAnyo + dividirAnyo - dividirAnyo100 + dividirAnyo400 + 2);
+
+                calculo6 = Math.trunc(calculo5/7);
+                calculo7 = Math.trunc(calculo5 - (calculo6 * 7));
+                resultado= diasSemana[calculo7];
+                console.log(resultado);
+
+            $("#mostrar").text(resultado);
+            }
+            //SE METE EL RESTO DE MESES
+            if(mes != 01 && mes != 02){
+
+            multiplicacionAnyo = Math.trunc(((mes + 1)*3)/5);
             console.log(multiplicacionAnyo);
-            var dividirAnyo = anyo/multiplicacionAnyo;
-            var dividirAnyo100 = anyo/100;
-            var dividirAnyo400 = anyo/400;
+            dividirAnyo = Math.trunc(anyo/4);
+            dividirAnyo100 = Math.trunc(anyo/100);
+            dividirAnyo400 = Math.trunc(anyo/400);
 
-            var calculo5 = dia + (mes*2) + anyo + multiplicacionAnyo + dividirAnyo - dividirAnyo100 + dividirAnyo400 + 2;
+            calculo5 = Math.trunc(dia + (mes*2) + anyo + multiplicacionAnyo + dividirAnyo - dividirAnyo100 + dividirAnyo400 + 2);
 
-            var calculo6 = calculo5/7;
-            var calculo7 = calculo5 - (calculo6 * 7);
+            calculo6 = Math.trunc(calculo5/7);
+            calculo7 = Math.trunc(calculo5 - (calculo6 * 7));
 
-            var resultado = "";
-            switch(calculo7){
+            resultado= diasSemana[calculo7];
+            console.log(resultado);
 
-                case 0:
-                    resultado = "Sábado";
-                    break;
-                case 1:
-                    resultado = "Sábado";
-                    break;
+            $("#mostrar").text(resultado);
             }
+
+
+            /*console.log("dividirAnyo");
+            console.log(dividirAnyo);
+            
+            console.log("dividirAnyo100");
+            console.log(dividirAnyo100);
+            
+            console.log("dividirAnyo400");
+            console.log(dividirAnyo400);
+            
+            console.log("calculo5");
+            console.log(calculo5);
+
+            console.log("calculo6");
+            console.log(calculo6);
+
+            console.log("calculo7");
+            console.log(calculo7);
+            */
+           
 
             });
 
