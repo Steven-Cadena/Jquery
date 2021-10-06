@@ -8,15 +8,32 @@
 </head>
 <body>
     <h1>Ejercicio con rangos </h1>
-    <input type="range" min="1" max="10" value="1" id="selector"/>
-    <button id="botoncrear">Crear imagenes</button>
+    <input type="range" min="1" max="10" value="0" id="selector"/>
     <div id="mostrar"></div>
     <script src="jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function(){
             $("#selector").change(function(){
-                
+                var cantidad = $("#selector").val();
+                var mostrar = $("#mostrar");
+                console.log("rango " + cantidad);
+
+                $("div").text("");
+                for (var i=1; i<cantidad; i++) {
+                    var img = $("<img src='images/paisaje.jpg'  width=200px heigth=200px/>");
+                    img.appendTo(mostrar);
+                }
+                $("img").mouseover(function(){
+                    $(this).attr("src", "images/paisaje2.jpg");
+                });
+
+                $("img").mouseout(function(){
+                    $(this).attr("src", "images/paisaje.jpg");
+                });
+
             });
+
+
         });
 
     </script>
