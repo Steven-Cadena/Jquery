@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>DEPARTAMENTOS</h1>
+    <div id="contenedor">
+    </div>
+    <div id="datos"></div>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.get("documents/xml/departamentosetiquetas.xml", function(data){
+                console.log(data);
+                var html = "";
+                $(data).find("DEPARTAMENTO").each(function(){
+                    var numero = $(this).find("NUMERO").text();
+                    console.log(numero);
+                    html += "<button type='button' id="+ numero + "> Departamento " + numero + "</button>"; 
+                });
+                $("#contenedor").html(html);
+
+                $("button").click(function(){
+                    var id = $(this).attr("id");  
+                    var numero = "";   
+                    var nombre = "";
+                    var localidad = "";
+                    $.get("documents/xml/departamentosetiquetas.xml", function(data){
+                        $(data).find("DEPARTAMENTO").each(function(){
+                            numero = $(this).find("NUMERO").text();
+                            if(id == numero){
+                                localidad = $(this).find("LOCALIDAD").text();
+                                nombre = $(this).find("NOMBRE").text();
+                                //console.log("nombre " + nombre);
+                                console.log("localidad " + localidad);
+                                $("#datos").html("<h1> Nombre:"+ nombre + "</h1> <br/>" + 
+                        "<h1> Localidad:"+ localidad + "</h1>");
+                            }
+                        });
+                    });                                 
+                })
+            });
+        });
+    </script>
+</body>
+</html>
