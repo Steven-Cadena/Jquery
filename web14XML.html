@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Busqueda XML</h1>
+    <label> Apellido: </label>
+    <input type="text" id="cajaapellido"/>
+    <button type="button" id="botonapellido">
+        Buscar Apellidos
+    </button>
+    <hr/>
+    
+    <label> CODIGO HOSPITAL: </label>
+    <input type="text" id="cajahospital"/>
+    <button type="button" id="botonhospital">
+        Buscar Hospital
+    </button>
+    <hr/>
+    <div id="contenido"></div>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+
+            $("#botonhospital").click(function(){
+                var codigo = $("#cajahospital").val();
+                
+                $.get("documents/xml/hospital_atributos.xml", function(data){
+                    //HOSPITAL[HOSPITAL_COD=14]
+                    var filtro = "HOSPITAL[HOSPITAL_COD=" + codigo + "]";
+                    //CAPTURAMOS EL NODODE HOSPITAL PARA POSTERIORMENTE 
+                    //RECUPERAR LOS DATOS NECESARIOS
+                    var nodohospital = $(data).find(filtro).first();
+                    var nombre = nodohospital.attr("NOMBRE");
+                    $("#contenido").html("<h1> Resultado: " + nombre + "</h1>");
+                });
+            });
+
+
+
+            
+            $("#botonapellido").click(function(){
+                var apellido = $("#cajaapellido").val();
+                $.get("documents/xml/empleados.xml", function(data){
+                    
+
+                });
+            });
+        });
+    </script>
+</body>
+</html>
