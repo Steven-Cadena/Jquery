@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="css/product.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Coches con BOOTSTRAP</h1>
+    <select name="" id="coches">
+    </select>
+    <div id="contenedor" class="container"></div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.get("documents/xml/coches.xml", function(data){
+                console.log(data);
+                var select = $("#coches");
+                var html = "";
+                $(data).find("coche").each(function(){
+                    var nombreCoche =  $(this).find("modelo").text();
+                    //console.log("nombre coche " + nombreCoche);
+                    html +="<option value="+ nombreCoche +">" + nombreCoche + "</option>";
+                });
+                $("#coches").append(html);
+                $("#coches").change(function(){
+                    var option = $(this).val();
+                    var imagen = "";
+                    var h1 ="";
+                    console.log("option " + option);
+                    $.get("documents/xml/coches.xml", function(data){
+                        $(data).find("coche").each(function(){
+                            var modelo = $(this).find("modelo").text();
+                            //console.log("modelo dentro de for" + modelo);
+                            if(option == modelo){
+                                var img = $(this).find("imagen").text();
+                                h1 += "<h1>"+ modelo + "</h1>";
+                                imagen +="<img src='" + img + "'/>"; 
+                                //console.log("imagen " + img);
+                                $("#contenedor").append(h1);
+                                $("#contenedor").append(imagen);
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

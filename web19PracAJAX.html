@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Jugadores</h1>
+    <select id="jugadores"></select>
+    <div id="contenido">
+
+    </div>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>	
+    $(document).ready(function(){
+        $.ajax({
+            "url" : "documents/json/jugadores.json"
+            , "method" : "GET"
+            , "dataType" : "json"
+            ,  success : function(data){
+                    $.each(data.jugadores, function(key,value){
+                        //console.log(data.jugadores);
+                        var h1 = $("<option>"+ value.nombre + "</option>");
+                        $("#jugadores").append(h1);
+                    });
+                    }, error: function(){
+                        $("#contenido").text("Error del servidor");
+                    }
+        });
+
+        $("#jugadores").change(function(){
+            var option = $(this).val();
+            console.log("option " + option);
+            var imagen = "";
+            var h1 = "";
+            var edad = "";
+            var posicion = "";
+            $.ajax({
+            "url" : "documents/json/jugadores.json"
+            , "method" : "GET"
+            , "dataType" : "json"
+            ,  success : function(data){
+                    $.each(data.jugadores, function(key,value){
+                        if(option == value.nombre){
+                            imagen +="<img src='" + value.imagen + "' style='width:250px','heigth:250px' />"; 
+                            h1 += "<h1>" + value.nombre + "</h1>";
+                            edad += "<h2>" + value.edad + "</h2>";
+                            posicion += "<h2>" + value.posicion + "</h2>";
+                            $("#contenido").append(h1);
+                            $("#contenido").append(edad);
+                            $("#contenido").append(posicion);
+                            $("#contenido").append(imagen);
+                        }
+                    });
+                    }, error: function(){
+                        $("#contenido").text("Error del servidor");
+                    }
+        });
+                        
+        });
+
+
+    });
+    </script>
+</body>
+</html>
