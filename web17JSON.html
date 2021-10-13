@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>DOCUMENTO JSON SIMPLE</h1>
+    <button type="button" id="botonget">
+        leer con getJson
+    </button>
+    <button type="button" id="botonajax">
+        leer con Ajax
+    </button>
+    <hr/>
+    <div id="contenido"> 
+
+    </div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#botonget").click(function(){
+                $.getJSON("documents/json/tareas.json" , function(data){
+                    console.log(data);
+                    //key y value son nombres de variables 
+                    //pueden tener cualquier valor 
+                    $.each(data, function(key,value){
+                        //key es la clave 
+                        //value es el valor 
+                        var h1 = $("<h1>",{
+                            "text":"Clave "
+                            + key + ", Valor: " + value 
+                        });
+                        //agregamos el hijo al padre 
+                        h1.appendTo($("#contenido"));
+                    });
+                });
+            });
+            $("#botonajax").click(function(){
+                $.ajax({
+                    "url" : "documents/json/tareas.json"
+                    , "method" : "GET"
+                    , "dataType" : "json"
+                    ,  success : function(data){
+                        $.each(data, function(key,value){
+                            console.log(data);
+                            var h1 = $("<h1>",{
+                                "style":"color:red"
+                                , "text" : "Clave " + key 
+                                +  ", Valor:" + value 
+                            });
+                            $("#contenido").append(h1);
+                        });
+                    }, error: function(){
+                        $("#contenido").text("Error del servidor");
+                    }
+                });
+            });
+        });
+
+
+    </script>
+</body>
+</html>
