@@ -43,7 +43,6 @@
             , "method" : "GET"
             , "dataType" : "json"
             ,  success : function(data){
-
                     $.each(data.jugadores, function(key,value){
                         if(option == value.nombre){
                             imagen +="<img src='" + value.imagen + "' style='width:250px','heigth:250px' />"; 
