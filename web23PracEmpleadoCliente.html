@@ -62,7 +62,6 @@
                             });
                             boton.click(function(){
                                 var id = $(this).data("empleado");
-                                console.log(id);
 
                             });
                             tdape.append(boton);
@@ -76,6 +75,18 @@
                 });
             }); 
         });
+
+        function cargarEmpleado(idEmpleado){
+            var request = "api/empleados/"+ id;
+            console.log(id);
+            $.ajax({
+                "url": urlemp + request
+                , "type": "GET"
+                , success: function(data){
+                    console.log(data);
+                }
+             });
+        }
     </script>
 </body>
 </html>
