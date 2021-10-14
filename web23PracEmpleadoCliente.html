@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Consumo Api Empleados Cliente</h1>
+    <h2>Introduzca un salario:</h2>
+    <input type="text" id="salario"> </input>
+    <button type="button" id="buscador">
+        Buscar Empleados
+    </button>
+
+    <table border="1" id="tablaempleados">
+        <thead>
+            <tr>
+                <th>APELLIDO</th>
+                <th>OFICIO</th>
+                <th>SALARIO</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <table border="1" id="datosempleado">
+        <thead>
+            <tr>
+                <th>ID EMPLEADO</th>
+                <th>APELLIDO</th>
+                <th>OFICIO</th>
+                <th>SALARIO</th>
+                <th>DEPARTAMENTO</th>
+            </tr>
+        </thead>
+    </table>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>
+        var urlemp = "https://apiempleadosspgs.azurewebsites.net/";
+        $(document).ready(function(){
+            $("#buscador").click(function(){
+                var salario = $("#salario").val();
+                console.log(salario);
+                var request = "api/empleados/empleadossalario/" + salario;
+                $.ajax({
+                    "url": urlemp + request
+                    ,"type": "GET"
+                    ,success:function(data){
+                        console.log(data);
+                        $.each(data, function(index,empleado){
+                            var tr = $("<tr>");
+                            var tdape = $("<td>");
+                            var tdofi = $("<td>", {"text": empleado.oficio});
+                            var tdsal = $("<td>", {"text": empleado.salario});
+                            var boton = $("<a>",{
+                                "href":"#",
+                                "text":empleado.apellido,
+                                "data-empleado":empleado.idEmpleado
+                            });
+                            boton.click(function(){
+                                var id = $(this).data("empleado");
+                                console.log(id);
+
+                            });
+                            tdape.append(boton);
+                            tr.append(tdape);
+                            tr.append(tdofi);
+                            tr.append(tdsal);
+                            $("#tablaempleados tbody").append(tr);
+                        });
+                        
+                    }
+                });
+            }); 
+        });
+    </script>
+</body>
+</html>
