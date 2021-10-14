@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Ejemplo  CRUD JQUERY</h1>
+    <label>Número: </label> <br>
+    <input type="text" id="cajanumero"/> <br>
+    <label>Nombre: </label><br>
+    <input type="text" id="cajanombre"/><br>
+    <label>Localidad: </label><br>
+    <input type="text" id="cajalocalidad"/><br><br>
+
+    <button type="button" id="botoninsertar">
+        Insertar departamento
+    </button>
+    <button type="button" id="botonmodificar">
+        Modificar departamento
+    </button>
+    <button type="button" id="botoneliminar">
+        Eliminar departamento
+    </button>
+    <br><br>
+    <table border="1" id="tabladepartamentos">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Nombre</th>
+                <th>Localidad</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>
+        var urlapi = "https://apicruddepartamentoscore.azurewebsites.net";
+        $(document).ready(function(){
+            cargarDepartamentos();
+            $("#botoninsertar").click(function(){
+                var num = $("#cajanumero").val();
+                var nom = $("#cajanombre").val();
+                var loc = $("#cajalocalidad").val();
+                var request = "/api/departamentos";
+                //PARA PODER INSERTAR DEBEMOS ENVIAR UN OBJETO DEPARTAMENTO 
+                //EN FORMATO JSON
+                //DEBEMOS CREARNOS UN OBJETO JAVASCRIPT 
+                //CON LAS PROPIEDADES DEL JSON
+                var dept = new Object();
+                //LAS PROPIEDADES SON DINAMICAS, NOS LAS INVENTAMOS
+                dept.numero = parseInt(num);
+                dept.nombre = nom;
+                dept.localidad = loc;
+                //UNA VEZ QUE TENEMOS EL OBJETO HAY QUE TRANSFORMARLO EN FORMATO 
+                //JSON, PARA ELLO SE UTILIZA UN METODO DE JAVASCRIPT: JSON.stringfy(OBJETO)
+                var json = JSON.stringify(dept);
+                //console.log(json);
+                //PARA ENVIAR INFORMACION AL SERVICIO SE REALIZA MEDIANTE EL ATRIBUTO data 
+                //SI ENVIAMOS data, DEBEMOS INCLUIR TAMBIEN contentType QUE ES LA PROPIEDAD
+                // QUE ENVIAMOS AL SERVICIO Y contentType UTILIZA MIME TYPE: aplication/json
+                $.ajax({
+                    "url": urlapi + request
+                    , "type": "POST" // SIEMPRE EN MAYUSCULAS
+                    , "data" : json
+                    , "contentType": "application/json" //TIPO ENVIADO
+                    , success: function() {
+                        //console.log("insertado");
+                        cargarDepartamentos();
+                    } 
+                });
+            });
+            $("#botonmodificar").click(function(){
+                var num = $("#cajanumero").val();
+                var nom = $("#cajanombre").val();
+                var loc = $("#cajalocalidad").val();
+                var request = "/api/departamentos";
+                
+                //CREAMOS EL OBJETO
+                var dept = new Object();
+                //AÑADIMOS LOS VALORES NECESARIOS 
+                dept.numero = parseInt(num);
+                dept.nombre = nom;
+                dept.localidad = loc;
+                //CONVERTIMOS EL OBJETO A JSON
+                var json = JSON.stringify(dept);
+                $.ajax({
+                    "url" : urlapi + request
+                    , "type" : "PUT"
+                    , "data" : json
+                    , "contentType" : "application/json"
+                    , success: function(){
+                        console.log("Modificado");
+                        cargarDepartamentos();
+                    }
+                });
+            });
+            $("#botoneliminar").click(function(){
+                var num = $("#cajanumero").val();
+                var request = "/api/departamentos/" + num;
+                $.ajax({
+                    "url" : urlapi + request
+                    , "type": "DELETE"
+                    , success: function(){
+                        console.log("ELIMINADO");
+                        cargarDepartamentos();
+                    }
+                });
+
+            });
+        });
+
+        function cargarDepartamentos(){
+            var request = "/api/departamentos";
+            $.ajax({
+                "url": urlapi + request
+                , "type": "GET"
+                , success: function(data){
+                    console.log(data);
+                    var html = "";
+                    $.each(data, function(index,dept){
+                        html += "<tr>";
+                        html += "<td>" + dept.numero + "</td>";
+                        html += "<td>" + dept.nombre + "</td>";
+                        html += "<td>" + dept.localidad + "</td>";
+                        html += "</tr>";
+                    });
+                    $("#tabladepartamentos tbody").html(html);
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>
