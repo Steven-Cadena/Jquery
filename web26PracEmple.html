@@ -30,7 +30,7 @@
                     var request = "/api/Empleados/GetEmpleadosOficio/empleadosoficio/" + oficioSelect;
                     var html = "";
                     console.log(incremento);
-                    $.ajax({
+                    /*$.ajax({
                         "url": urlapi + request
                         , "type": "GET"
                         , success:function(data){
@@ -51,10 +51,10 @@
                             
                             }
                         }
-                    });
+                    });*/
                 });
             });
-
+        });
 
         function cargarOficios(){
             var request = "api/empleados/GetOficios/oficios";
