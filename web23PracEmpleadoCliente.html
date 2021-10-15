@@ -5,16 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 <body>
     <h1>Consumo Api Empleados Cliente</h1>
     <h2>Introduzca un salario:</h2>
     <input type="text" id="salario"> </input>
-    <button type="button" id="buscador">
+    <button type="button" id="buscador" class="btn-success">
         Buscar Empleados
     </button>
-
-    <table border="1" id="tablaempleados">
+    <br><br>
+    <table border="1" id="tablaempleados" class="table table-bordered">
         <thead>
             <tr>
                 <th>APELLIDO</th>
@@ -24,8 +25,8 @@
         </thead>
         <tbody></tbody>
     </table>
-
-    <table border="1" id="datosempleado">
+    <br>
+    <table border="1" id="datosempleado" class="table table-bordered">
         <thead>
             <tr>
                 <th>ID EMPLEADO</th>
@@ -35,6 +36,7 @@
                 <th>DEPARTAMENTO</th>
             </tr>
         </thead>
+        <tbody></tbody>
     </table>
 
     <script src="js/jquery-3.6.0.min.js"></script>
@@ -49,41 +51,55 @@
                     "url": urlemp + request
                     ,"type": "GET"
                     ,success:function(data){
+                        $("#tablaempleados tbody").empty();//BORRAMOS LOS DATOS ANTERIORES
                         console.log(data);
                         $.each(data, function(index,empleado){
                             var tr = $("<tr>");
                             var tdape = $("<td>");
                             var tdofi = $("<td>", {"text": empleado.oficio});
                             var tdsal = $("<td>", {"text": empleado.salario});
-                            var boton = $("<a>",{
+                            var href = $("<a>",{
                                 "href":"#",
                                 "text":empleado.apellido,
                                 "data-empleado":empleado.idEmpleado
                             });
-                            boton.click(function(){
+                            href.click(function(){
                                 var id = $(this).data("empleado");
-
+                                
+                                cargarEmpleado(id);
                             });
-                            tdape.append(boton);
+                            tdape.append(href);
                             tr.append(tdape);
                             tr.append(tdofi);
                             tr.append(tdsal);
                             $("#tablaempleados tbody").append(tr);
                         });
-                        
                     }
                 });
             }); 
         });
 
         function cargarEmpleado(idEmpleado){
-            var request = "api/empleados/"+ id;
-            console.log(id);
+            var request = "api/empleados/"+ idEmpleado;
+            //console.log(idEmpleado);
             $.ajax({
                 "url": urlemp + request
                 , "type": "GET"
                 , success: function(data){
-                    console.log(data);
+                    $("#datosempleado tbody").empty();//BORRAMOS LOS DATOS ANTERIORES
+                    var tr = $("<tr>");
+                    var tdid = $("<td>", {"text": data.idEmpleado});
+                    var tdape = $("<td>", {"text": data.apellido});
+                    var tdofi = $("<td>", {"text": data.oficio});
+                    var tdsal = $("<td>", {"text": data.salario});
+                    var tddep = $("<td>", {"text": data.departamento});
+
+                    tr.append(tdid);
+                    tr.append(tdape);
+                    tr.append(tdofi);
+                    tr.append(tdsal);    
+                    tr.append(tddep);
+                    $("#datosempleado tbody").append(tr);
                 }
              });
         }
