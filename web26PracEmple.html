@@ -16,7 +16,19 @@
     <input type="text" id="cajasalario"/><br><br>
     <button type="button" class="btn btn-info" id="botonincremento">INCREMENTO</button>
     <button type="button" class="btn btn-info" id="botonmostrar">MOSTRAR EMPLEADOS</button>
-    <div id="contenedor"></div>
+    <br><br>
+    <table border="1" id="tabla" class="table">
+        <thead>
+            <tr>
+                <th>ID EMPLEADO</th>
+                <th>APELLIDO </th>
+                <th>OFICIO</th>
+                <th>DIRECTOR</th>
+                <th>SALARIO</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
     <script src="js/jquery-3.6.0.min.js"></script>
     <script>
         var urlapi = "https://apiempleadosaction.azurewebsites.net/";
@@ -27,37 +39,62 @@
                 console.log(oficioSelect);
                 $("#botonincremento").click(function(){
                     var incremento = $("#cajasalario").val();
-                    var request = "/api/Empleados/GetEmpleadosOficio/empleadosoficio/" + oficioSelect;
+                    var request = "/api/Empleados/IncrementarSalarioOficios/" + oficioSelect + "/" + incremento;
                     var html = "";
                     console.log(incremento);
-                    /*$.ajax({
+                    $.ajax({
                         "url": urlapi + request
-                        , "type": "GET"
+                        , "type": "PUT"
                         , success:function(data){
-                            console.log(data);
-                            $.each(data,function(index,empleado){
-                                html +="<table>";
-                                html +="<thead>";
-                                html +="<tr>";
-                                html +="<th> ID EMPLEADO" + empleado.idEmpleado + "</th>";
-                                html +="<th> APELLIDO" + empleado.apellido + "</th>";
-                                html +="<th> OFICIO" + empleado.oficio + "</th>";
-                                html +="<th> SALARIO" + empleado.salario + "</th>";
-                                html +="<th> DIRECTOR" + empleado.director + "</th>";
-                                html +="</tr>";
-                                html +="";
-                            });
-
-                            
-                            }
+                            $("#tabla tbody").empty();
+                            cargarEmpleados(oficioSelect);
+                            console.log("incrementado");
                         }
-                    });*/
+                    });
                 });
+            });
+
+            $("#botonmostrar").click(function(){
+                var request = "/Api/Empleados";
+                var html = "";
+                $("#tabla tbody").empty();
+                $.ajax({
+                    "url": urlapi + request
+                    , "type": "GET"
+                    , success:function(data){
+                        console.log(data);
+                        $.each(data, function(index,empleado){
+                            var tr = $("<tr>");
+                            var tdid = $("<td>", {
+                                "text": empleado.idEmpleado
+                            });
+                            var tdape = $("<td>", {
+                                "text": empleado.apellido
+                            });
+                            var tdofi = $("<td>", {
+                                "text": empleado.oficio
+                            });
+                            var tddir = $("<td>", {
+                                "text": empleado.director
+                            });
+                            var tdsal = $("<td>", {
+                                "text": empleado.salario
+                            });
+                            tr.append(tdid);
+                            tr.append(tdape);
+                            tr.append(tdofi);
+                            tr.append(tddir);
+                            tr.append(tdsal);
+                            $("#tabla tbody").append(tr);
+                        });
+                    }
+                })
             });
         });
 
         function cargarOficios(){
             var request = "api/empleados/GetOficios/oficios";
+            $("#tabla tbody").empty();
             $.ajax({
                 "url": urlapi + request
                 , "type": "GET"
@@ -71,6 +108,40 @@
                     })
                 }
             });
+        }
+        function cargarEmpleados(oficio){
+            var request = "/api/Empleados/GetEmpleadosOficio/empleadosoficio/" + oficio;
+            $.ajax({
+                "url": urlapi + request
+                , "type": "GET"
+                , success:function(data){
+                    $.each(data, function(index,empleado){
+                        var tr = $("<tr>");
+                        var tdid = $("<td>", {
+                            "text": empleado.idEmpleado
+                        });
+                        var tdape = $("<td>", {
+                            "text": empleado.apellido
+                        });
+                        var tdofi = $("<td>", {
+                            "text": empleado.oficio
+                        });
+                        var tddir = $("<td>", {
+                            "text": empleado.director
+                        });
+                        var tdsal = $("<td>", {
+                            "text": empleado.salario
+                        });
+                        tr.append(tdid);
+                        tr.append(tdape);
+                        tr.append(tdofi);
+                        tr.append(tddir);
+                        tr.append(tdsal);
+                        $("#tabla tbody").append(tr);
+                    });
+                }
+            });
+
         }
     </script>
 </body>
